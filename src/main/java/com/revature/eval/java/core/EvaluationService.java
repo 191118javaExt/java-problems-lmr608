@@ -36,12 +36,7 @@ public class EvaluationService {
 	
 	public String acronym(String phrase) {
 		
-		String acronym = "";
-		
-		for(int i = 0; i < phrase.length; i++) {
-			if(phrase.charAt(i - 1) == " " || phrase.charAt(i - 1) == "-") {
-				acronym += words[i].toUpperCase().charAt(0);
-			}
+				
 		}
 		
 		return acronym;
