@@ -1,5 +1,6 @@
 package com.revature.eval.java.core;
 
+import java.util.*;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -277,13 +278,15 @@ public class EvaluationService {
 	 * @param string
 	 * @return
 	 */
-	public Map<String, Integer> wordCount(String[] strings) {
+	public Map<String, Integer> wordCount(String string) {
 		
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		
-		for(int i = 0; i < strings.length; i++) {
+		for(int i = 0; i < string.length(); i++) {
 			
-			String s = strings[i];
+			char[] arr = string.toCharArray();
+			
+			String s = 
 			
 			if(map.containsKey(s)) {
 				int count = map.get(s);
@@ -373,17 +376,26 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String toPigLatin(String string) {
-		int firstVowel = indexOfFirstVowel(string.toLowerCase());
-        if (firstVowel == -1)
+		string = string.toLowerCase();
+		int firstVowel = 0;
+		for(int i = 0; i < string.length(); i++)
+			if(string.charAt(i) == 'a' || string.charAt(i) == 'e' || string.charAt(i) == 'i' || string.charAt(i) == 'o' || string.charAt(i) == 'u') {
+				firstVowel = i;
+			}
+        if (firstVowel == -1) {
             return string;
-        if (firstVowel == 0) {
+        }
+        else if (firstVowel == 0) {
             return string + "ay";
         }
-        else {
-        String head = string.substring(0, firstVowel);
-        String tail = string.substring(firstVowel);
-        String result = tail + head + "ay";
+        else if {
+        	String beginning = string.substring(0, firstVowel);
+        	String end = string.substring(firstVowel);
+        	String result = beginning + end + "ay";
         return result;
+        }
+        else {
+        	
         }
 	}
 
@@ -533,7 +545,6 @@ public class EvaluationService {
 	 *
 	 */
 	static class AtbashCipher {
-
 		/**
 		 * Question 13
 		 * 
@@ -541,8 +552,31 @@ public class EvaluationService {
 		 * @return
 		 */
 		public static String encode(String string) {
-			// TODO Write an implementation for this method declaration
-			return null;
+			
+			String cipher = "";
+			String alphabet = "abcdefghijklmnopqrstuvwxyz";
+			String numbers = "1234567890";
+			String cipherAlphabet = "zyxwvutsrqponmlkjihgfedcba";
+
+			String[] arr = string.toLowerCase().split(" ");
+
+			for(int i = 0; i < arr.length ;i++) {
+				for(int j = 0; j < arr[i].length(); j++) {
+					if(alphabet.indexOf(arr[i].charAt(j)) >= 0) {
+						int index = cipherAlphabet.indexOf(arr[i].charAt(j));
+
+						cipher += alphabet.charAt(index);
+					}
+					if(numbers.indexOf(arr[i].charAt(j)) >=0 ) {
+						cipher += arr[i].charAt(j);
+					}
+					if(cipher.length() % 6 == 5) {
+						cipher += " ";
+					}
+				}
+			}
+			
+			return cipher;
 		}
 
 		/**
@@ -552,8 +586,27 @@ public class EvaluationService {
 		 * @return
 		 */
 		public static String decode(String string) {
-			// TODO Write an implementation for this method declaration
-			return null;
+			
+			String decipher = "";
+			String alphabet = "abcdefghijklmnopqrstuvwxyz";
+			String numbers = "1234567890";
+			String cipherAlphabet = "zyxwvutsrqponmlkjihgfedcba";
+
+			String[] arr = string.split(" ");
+
+			for(int i = 0; i < arr.length ;i++) {
+				for(int j = 0; j < arr[i].length(); j++) {
+					if(alphabet.indexOf(arr[i].charAt(j)) >= 0) {
+						int index = alphabet.indexOf(arr[i].charAt(j));
+
+						decipher += cipherAlphabet.charAt(index);
+					}
+					if(numbers.indexOf(arr[i].charAt(j)) >=0 ) {
+						decipher += arr[i].charAt(j);
+					}
+				}
+			}
+			return decipher;
 		}
 	}
 
@@ -655,8 +708,22 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int getSumOfMultiples(int i, int[] set) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+		
+		int sum = 0;
+		
+		for(int j = 0; j < i;  j++) {
+			Boolean isMultiple = false;
+			
+			for(int mySet : set) {
+				isMultiple |= j % mySet == 0;
+			}
+			
+			if(isMultiple) {
+				sum += j;
+			}
+		}
+		
+		return sum;
 	}
 
 	/**
@@ -696,8 +763,22 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isLuhnValid(String string) {
-		// TODO Write an implementation for this method declaration
-		return false;
+		
+		int digits = string.length();
+		int sum = 0;
+		boolean isLuhnValid = false;
+		
+		for(int i = digits - 1; i >= 0; i--) {
+			int j = string.charAt(i) - '0';
+		
+			if(isLuhnValid = true) {
+				j = j * 2;
+				
+				sum += j % 10;
+			}
+		}
+		
+		return(sum % 10 == 0);
 	}
 
 	/**
@@ -728,8 +809,47 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int solveWordProblem(String string) {
-		// TODO Write an implementation for this method declaration
+		
+		int index = 0;
+		int operand1, operand2;
+		String wordProblem;
+		String operator = "";
+		String[] brokenUpProblem;
+		
+		while(string.charAt(index) != '-' && string.charAt(index) != '0' && string.charAt(index) != '1' && string.charAt(index) != '2' && string.charAt(index) != '3' && string.charAt(index) != '4' && string.charAt(index) != '5' && string.charAt(index) != '6' && string.charAt(index) != '7' && string.charAt(index) != '8' && string.charAt(index) != '9') {
+			index++;
+		}
+		
+		if(string.charAt(string.length() - 1) == '?') {
+			wordProblem = string.substring(index, string.length() - 2);
+		}
+
+		wordProblem = string.substring(index, string.length() - 1);
+
+		brokenUpProblem = wordProblem.split(" ");
+
+		operand1 = Integer.parseInt(brokenUpProblem[0]);
+		operand2 = Integer.parseInt(brokenUpProblem[brokenUpProblem.length - 1]);
+
+		for(int i = 0; i < brokenUpProblem.length;i++) {
+			if(brokenUpProblem[i].equals("minus") || brokenUpProblem[i].equals("plus") || brokenUpProblem[i].equals("multiplied") || brokenUpProblem[i].equals("divided")) {
+				operator = brokenUpProblem[i];
+			}
+		}
+
+		switch(operator) {
+		case "minus":
+			return operand1 - operand2;
+		case "plus":
+			return operand1 + operand2;
+		case "multiplied":
+			return operand1 * operand2;
+		case "divided":
+			return operand1 / operand2;
+		}
+
 		return 0;
+
 	}
 
 }
